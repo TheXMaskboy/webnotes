@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic PDF Resizing with Auto-Resize</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+    <style>
+        iframe {
+            border: none;
+            display: block;
+            width: 100%; /* Make iframe width 100% of the container */
+            object-fit: contain; /* Ensure that PDF content scales to fit within iframe */
+        }
+        .pdf-container {
+            margin-bottom: 20px;
+        }
+        .download-link {
+            margin-top: 10px;
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .download-link:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <!-- PDF containers with iframe and download button -->
+    <div class="pdf-container">
+        <iframe id="iframe-1" src="IX POL CH-2.pdf"></iframe>
+        <a href="IX POL CH-2.pdf" class="download-link" download>Download PDF</a>
+    </div>
+    
+    <div class="pdf-container">
+        <iframe id="iframe-2" src="IX, Eco, Ch-2.pdf"></iframe>
+        <a href="IX, Eco, Ch-2.pdf" class="download-link" download>Download PDF</a>
+    </div>
+    
+    <div class="pdf-container">
+        <iframe id="iframe-3" src="IX, Geo, Ch-4.pdf"></iframe>
+        <a href="IX, Geo, Ch-4.pdf" class="download-link" download>Download PDF</a>
+    </div>
+    
+    <div class="pdf-container">
+        <iframe id="iframe-4" src="IX, GEOGRAPHY, CH-3.pdf"></iframe>
+        <a href="IX, GEOGRAPHY, CH-3.pdf" class="download-link" download>Download PDF</a>
+    </div>
+    
+    <div class="pdf-container">
+        <iframe id="iframe-5" src="IX, His, ch-4.pdf"></iframe>
+        <a href="IX, His, ch-4.pdf" class="download-link" download>Download PDF</a>
+    </div>
+    
+    <div class="pdf-container">
+        <iframe id="iframe-6" src="পোহৰৰ বাটেৰে আগবঢ়া গাঁওখন.pdf"></iframe>
+        <a href="পোহৰৰ বাটেৰে আগবঢ়া গাঁওখন.pdf" class="download-link" download>Download PDF</a>
+    </div>
+    
+    <div class="pdf-container">
+        <iframe id="iframe-7" src="প্ৰচণ্ড ধুমুহাই প্ৰশ্ন কৰিলে মোক.pdf"></iframe>
+        <a href="প্ৰচণ্ড ধুমুহাই প্ৰশ্ন কৰিলে মোক.pdf" class="download-link" download>Download PDF</a>
+    </div>
+    
+    <div class="pdf-container">
+        <iframe id="iframe-8" src="সুখ কবিতা IX.pdf"></iframe>
+        <a href="সুখ কবিতা IX.pdf" class="download-link" download>Download PDF</a>
+    </div>
+
+    <script>
+        // Array of iframe IDs and their corresponding PDF file paths
+        const pdfs = [
+            { iframeId: 'iframe-1', pdfUrl: 'IX POL CH-2.pdf' },
+            { iframeId: 'iframe-2', pdfUrl: 'IX, Eco, Ch-2.pdf' },
+            { iframeId: 'iframe-3', pdfUrl: 'IX, Geo, Ch-4.pdf' },
+            { iframeId: 'iframe-4', pdfUrl: 'IX, GEOGRAPHY, CH-3.pdf' },
+            { iframeId: 'iframe-5', pdfUrl: 'IX, His, ch-4.pdf' },
+            { iframeId: 'iframe-6', pdfUrl: 'পোহৰৰ বাটেৰে আগবঢ়া গাঁওখন.pdf' },
+            { iframeId: 'iframe-7', pdfUrl: 'প্ৰচণ্ড ধুমুহাই প্ৰশ্ন কৰিলে মোক.pdf' },
+            { iframeId: 'iframe-8', pdfUrl: 'সুখ কবিতা IX.pdf' }
+        ];
+
+        // Function to resize iframe based on PDF size
+        function resizeIframe(iframeId, pdfUrl) {
+            const iframe = document.getElementById(iframeId);
+
+            // Load the PDF with PDF.js
+            pdfjsLib.getDocument(pdfUrl).promise.then(function(pdf) {
+                // Get the first page of the PDF
+                pdf.getPage(1).then(function(page) {
+                    // Get the viewport with scale 1 (actual size of the PDF page)
+                    const viewport = page.getViewport({ scale: 1 });
+
+                    // Resize the iframe based on PDF's first page dimensions
+                    iframe.style.width = `${viewport.width}px`; // Set iframe width explicitly
+                    iframe.style.height = `${viewport.height}px`; // Set iframe height explicitly
+                }).catch(function(error) {
+                    console.error("Error loading page:", error);
+                });
+            }).catch(function(error) {
+                console.error("Error loading PDF:", error);
+            });
+        }
+
+        // Loop through all the PDFs and adjust iframe sizes
+        pdfs.forEach(pdf => {
+            resizeIframe(pdf.iframeId, pdf.pdfUrl);
+        });
+    </script>
+</body>
+</html>
